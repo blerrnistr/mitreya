@@ -1,0 +1,264 @@
+/* ===== ПАЛИТРА (гербарий + вазопись) ===== */
+:root{
+  --paper:#f2ecd9;
+  --paper-2:#e8e0c8;
+  --ink:#2b2a22;
+  --ink-soft:#5c5a48;
+  --line:#2b2a22;
+  --olive:#5f6b3a;
+  --olive-dark:#3f4a26;
+  --clay:#a4502e;
+  --clay-dark:#7a3620;
+  --gold:#b08d3f;
+  --white:#fbf8ee;
+}
+
+*{box-sizing:border-box;}
+
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--olive-dark);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(0,0,0,.06) 0 2px, transparent 2px 6px);
+  color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px;
+  line-height:1.55;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+/* ===== РАМКА-ВАЗА ===== */
+#game{
+  width:min(880px,100%);
+  background:var(--paper);
+  border:3px solid var(--line);
+  box-shadow:
+    8px 8px 0 var(--clay-dark),
+    8px 8px 0 3px var(--line);
+  position:relative;
+}
+#game::before{
+  content:"";
+  display:block;
+  height:14px;
+  background:
+    linear-gradient(90deg, var(--line) 0 50%, transparent 0) 0 0/28px 14px,
+    linear-gradient(90deg, var(--clay) 0 50%, transparent 0) 14px 0/28px 14px;
+  border-bottom:2px solid var(--line);
+}
+
+/* ===== СЦЕНА ===== */
+.stage{
+  position:relative;
+  height:300px;
+  background:var(--paper-2);
+  border-bottom:2px solid var(--line);
+  overflow:hidden;
+}
+.stage canvas, .stage img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.stage img{display:none;}
+.stage::after{
+  content:"";
+  position:absolute; inset:8px;
+  border:1px solid var(--line);
+  pointer-events:none;
+  opacity:.5;
+}
+
+/* ===== HUD ===== */
+.hud{
+  display:flex;
+  flex-wrap:wrap;
+  border-bottom:2px solid var(--line);
+  background:var(--paper);
+  font-size:14px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hud > div{
+  flex:1 1 0;
+  min-width:140px;
+  padding:10px 16px;
+  border-right:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hud > div:last-child{border-right:none;}
+.hud b{
+  font-weight:normal;
+  font-variant-numeric:tabular-nums;
+  color:var(--clay-dark);
+}
+.meter{
+  flex:1;
+  height:10px;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  position:relative;
+}
+.meter i{
+  display:block;
+  height:100%;
+  background:var(--olive);
+  transition:width .25s ease;
+}
+.meter.warm i{background:var(--clay);}
+
+/* ===== КОНТЕНТ ===== */
+#content{padding:26px 30px 30px;}
+
+h1{
+  font-size:26px;
+  font-weight:normal;
+  letter-spacing:.04em;
+  margin:0 0 2px;
+  text-transform:uppercase;
+  border-bottom:2px solid var(--line);
+  display:inline-block;
+  padding-bottom:2px;
+}
+h2{
+  font-size:15px;
+  font-weight:normal;
+  font-style:italic;
+  color:var(--ink-soft);
+  margin:8px 0 18px;
+  letter-spacing:.03em;
+}
+p{margin:0 0 14px;max-width:62ch;}
+
+/* ===== КНОПКИ ===== */
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:18px 0 0;
+  border-top:1px solid var(--line);
+}
+.choices button{
+  font:inherit;
+  font-size:16px;
+  text-align:left;
+  cursor:pointer;
+  padding:12px 14px 12px 40px;
+  background:transparent;
+  color:var(--ink);
+  border:none;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  transition:background .12s;
+}
+.choices button::before{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:50%;
+  width:9px;height:9px;
+  margin-top:-5px;
+  border:1px solid var(--line);
+  background:transparent;
+  transform:rotate(45deg);
+}
+.choices button:hover{
+  background:var(--paper-2);
+}
+.choices button:hover::before{
+  background:var(--clay);
+}
+.choices button:disabled{
+  color:var(--ink-soft);
+  cursor:default;
+  background:transparent;
+}
+.choices button:disabled::before{
+  background:var(--line);
+  opacity:.3;
+}
+
+/* ===== ЗАМЕТКИ / ШЁПОТ ===== */
+.note{
+  margin-top:18px;
+  min-height:22px;
+  font-size:14px;
+  color:var(--ink-soft);
+  font-style:italic;
+  border-left:2px solid var(--clay);
+  padding-left:12px;
+}
+.whisper{
+  color:var(--olive-dark);
+  font-style:italic;
+}
+
+/* ===== ФИНАЛ ===== */
+.ending{
+  border:2px solid var(--line);
+  background:var(--white);
+  padding:16px 18px;
+  margin:6px 0 18px;
+  position:relative;
+}
+.ending::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border:1px solid var(--line);
+  pointer-events:none;
+  opacity:.35;
+}
+
+/* ===== СЕТКА ТРАВ ===== */
+#herbGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:0;
+  border:1px solid var(--line);
+  border-top:none;
+  margin:0 0 0;
+}
+#herbGrid button{
+  border:none;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  padding:12px 14px;
+}
+#herbGrid button:nth-child(2n){border-right:none;}
+#herbGrid button:nth-last-child(-n+2){border-bottom:none;}
+
+/* ===== КНОПКА ПЕРЕЗАПУСКА ===== */
+#restart{
+  display:block;
+  width:100%;
+  font:inherit;
+  font-size:16px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:14px;
+  background:var(--olive);
+  color:var(--white);
+  border:none;
+  border-bottom:2px solid var(--line);
+  cursor:pointer;
+  transition:background .15s;
+}
+#restart:hover{background:var(--olive-dark);}
+
+.hidden{display:none;}
+
+@media (max-width:560px){
+  body{padding:0;align-items:stretch;}
+  #game{width:100%;border-left:none;border-right:none;box-shadow:none;}
+  .stage{height:200px;}
+  #content{padding:20px 18px 24px;}
+  h1{font-size:21px;}
+}
