@@ -7,19 +7,15 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="journal">
-  <!-- Кожаный корешок -->
-  <div class="spine"></div>
-
-  <div class="page">
-    <!-- Сцена-иллюстрация -->
+<div id="book">
+  <!-- ЛЕВАЯ СТРАНИЦА: сцена + HUD -->
+  <section class="page page-left">
     <div class="stage">
       <div class="stage-frame"></div>
-      <canvas id="sceneCanvas" width="880" height="300"></canvas>
+      <canvas id="sceneCanvas" width="880" height="620"></canvas>
       <img id="sceneArt" alt="">
     </div>
 
-    <!-- HUD как stat block -->
     <div class="hud">
       <div class="stat">
         <span class="stat-icon">⏳</span>
@@ -37,11 +33,17 @@
         <span class="pips" id="pipsWarm"></span>
       </div>
     </div>
+  </section>
 
-    <!-- Контент -->
+  <!-- КОРЕШОК -->
+  <div class="spine" aria-hidden="true"></div>
+
+  <!-- ПРАВАЯ СТРАНИЦА: текст -->
+  <section class="page page-right">
     <div id="content"></div>
-  </div>
+  </section>
 </div>
+
 <script src="game.js" defer></script>
 </body>
 </html>
