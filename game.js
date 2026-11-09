@@ -129,13 +129,26 @@ function showScene(scene){
   artImg.src = src + "?v=" + Date.now();
 }
 
-/* ============ HUD ============ */
+/* ============ HUD (пипсы) ============ */
 function updateHUD(){
   document.getElementById('hudTime').textContent = S.time;
-  document.getElementById('barStr').style.width = (S.str/5*100)+"%";
-  document.getElementById('barWarm').style.width = (S.warm/5*100)+"%";
-}
 
+  const pipsStr = document.getElementById('pipsStr');
+  const pipsWarm = document.getElementById('pipsWarm');
+
+  pipsStr.innerHTML = '';
+  pipsWarm.innerHTML = '';
+
+  for(let i=0;i<5;i++){
+    const a=document.createElement('i');
+    if(i < S.str) a.classList.add('on');
+    pipsStr.appendChild(a);
+
+    const b=document.createElement('i');
+    if(i < S.warm) b.classList.add('on');
+    pipsWarm.appendChild(b);
+  }
+}
 /* ============ ШЁПОТ ============ */
 let whisperTimer=null;
 function scheduleWhisper(text){
