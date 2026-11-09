@@ -1,4 +1,4 @@
-/* ===== ПАЛИТРА: кожа, пергамент, чернила ===== */
+/* ===== ПАЛИТРА ===== */
 :root{
   --leather:#3b2a1e;
   --leather-dark:#2a1d14;
@@ -17,42 +17,88 @@
 *{box-sizing:border-box;}
 
 html,body{height:100%;}
+
 body{
   margin:0;
   background:
-    radial-gradient(circle at 20% 10%, #4a3626 0%, transparent 40%),
-    radial-gradient(circle at 80% 90%, #3a2a1c 0%, transparent 40%),
+    radial-gradient(circle at 20% 10%, #4a3626 0%, transparent 45%),
+    radial-gradient(circle at 80% 90%, #3a2a1c 0%, transparent 45%),
     var(--leather-dark);
   color:var(--ink);
   font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   font-size:17px;
   line-height:1.55;
+  min-height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:24px;
 }
 
-/* ===== ЖУРНАЛ ===== */
-#journal{
-  width:min(880px,100%);
-  position:relative;
-  display:flex;
+/* ===== КНИГА ===== */
+#book{
+  width:min(1200px,100%);
+  height:min(820px, calc(100vh - 48px));
+  display:grid;
+  grid-template-columns:1fr 18px 1fr;
   box-shadow:
     0 0 0 2px var(--leather-dark),
-    0 20px 40px rgba(0,0,0,.5),
+    0 24px 50px rgba(0,0,0,.55),
     inset 0 0 0 1px rgba(0,0,0,.3);
+  position:relative;
+  background:var(--leather-dark);
+  overflow:hidden;
 }
 
+/* ===== СТРАНИЦЫ ===== */
+.page{
+  position:relative;
+  min-width:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      var(--line-faint) 27px 28px
+    ),
+    linear-gradient(to bottom, var(--paper), var(--paper-2));
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:26px 28px 30px;
+}
+
+.page::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(160,140,100,.18) 0%, transparent 35%),
+    radial-gradient(circle at 90% 100%, rgba(160,140,100,.18) 0%, transparent 35%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Лёгкая тень-сгиб: слева от правой страницы, справа от левой */
+.page-left{
+  border-right:1px solid var(--leather-dark);
+  box-shadow: inset -12px 0 24px -18px rgba(0,0,0,.5);
+}
+.page-right{
+  border-left:1px solid var(--leather-dark);
+  box-shadow: inset 12px 0 24px -18px rgba(0,0,0,.5);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== КОРЕШОК ===== */
 .spine{
-  width:22px;
   background:
     repeating-linear-gradient(
       to right,
-      var(--leather) 0 4px,
-      var(--leather-dark) 4px 6px,
-      var(--leather) 6px 10px
+      var(--leather) 0 3px,
+      var(--leather-dark) 3px 5px,
+      var(--leather) 5px 8px
     );
+  border-left:1px solid var(--leather-dark);
   border-right:1px solid var(--leather-dark);
   position:relative;
 }
@@ -62,84 +108,59 @@ body{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  width:8px;height:8px;
+  width:7px;height:7px;
   border-radius:50%;
   background:var(--leather-dark);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
 }
-.spine::before{top:20px;}
-.spine::after{bottom:20px;}
+.spine::before{top:18px;}
+.spine::after{bottom:18px;}
 
-.page{
-  flex:1;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0 27px,
-      var(--line-faint) 27px 28px
-    ),
-    linear-gradient(to bottom, var(--paper), var(--paper-2));
-  border:1px solid var(--leather-dark);
-  border-left:none;
-  position:relative;
-  padding:0;
-  overflow:hidden;
-}
-.page::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(160,140,100,.15) 0%, transparent 30%),
-    radial-gradient(circle at 90% 100%, rgba(160,140,100,.15) 0%, transparent 30%);
-  pointer-events:none;
-  z-index:0;
-}
-
-/* ===== СЦЕНА ===== */
+/* ===== СЦЕНА (левая страница) ===== */
 .stage{
   position:relative;
-  height:300px;
-  margin:14px;
+  aspect-ratio:4/3;
+  width:100%;
   border:1px solid var(--line);
   background:var(--paper-2);
   overflow:hidden;
   z-index:1;
+  margin:0 0 16px;
 }
 .stage canvas, .stage img{
   display:block;
   width:100%;
   height:100%;
   object-fit:cover;
+  transition:opacity .35s ease;
 }
 .stage img{display:none;}
+
 .stage-frame{
   position:absolute;
-  inset:4px;
+  inset:6px;
   border:1px solid var(--line);
   pointer-events:none;
   opacity:.35;
   z-index:2;
 }
-/* Греческий меандр в углах сцены */
 .stage-frame::before,
 .stage-frame::after{
   content:"";
   position:absolute;
-  width:28px;height:28px;
+  width:30px;height:30px;
   border:2px solid var(--gold);
-  opacity:.6;
+  opacity:.65;
 }
 .stage-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
 .stage-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
 
-/* ===== HUD: stat block ===== */
+/* ===== HUD-подпись под сценой ===== */
 .hud{
   display:flex;
   flex-wrap:wrap;
-  margin:0 14px;
-  border:1px solid var(--line);
-  background:rgba(242,232,208,.6);
+  border:1px solid var(--line-faint);
+  background:rgba(242,232,208,.55);
   font-size:13px;
   letter-spacing:.04em;
   z-index:1;
@@ -147,36 +168,28 @@ body{
 }
 .hud > .stat{
   flex:1 1 0;
-  min-width:140px;
-  padding:8px 14px;
+  min-width:120px;
+  padding:10px 12px;
   border-right:1px solid var(--line-faint);
   display:flex;
   align-items:center;
   gap:8px;
 }
 .hud > .stat:last-child{border-right:none;}
-.stat-icon{
-  font-size:15px;
-  opacity:.8;
-}
+.stat-icon{font-size:15px;opacity:.8;}
 .stat-label{
   text-transform:uppercase;
   color:var(--ink-soft);
-  font-size:11px;
-  letter-spacing:.1em;
+  font-size:10.5px;
+  letter-spacing:.12em;
 }
 .stat-value{
   margin-left:auto;
-  font-weight:normal;
   font-variant-numeric:tabular-nums;
   color:var(--clay);
   font-size:16px;
 }
-.pips{
-  margin-left:auto;
-  display:flex;
-  gap:3px;
-}
+.pips{margin-left:auto;display:flex;gap:3px;}
 .pips i{
   width:10px;height:10px;
   border:1px solid var(--line);
@@ -186,11 +199,11 @@ body{
 .pips i.on{background:var(--olive);}
 .pips.warm i.on{background:var(--clay);}
 
-/* ===== КОНТЕНТ ===== */
+/* ===== КОНТЕНТ (правая страница) ===== */
 #content{
-  padding:22px 26px 26px;
   position:relative;
   z-index:1;
+  flex:1;
 }
 
 h1{
@@ -220,7 +233,7 @@ h2{
   margin:8px 0 16px;
   letter-spacing:.03em;
 }
-p{margin:0 0 14px;max-width:62ch;}
+p{margin:0 0 14px;max-width:60ch;}
 
 /* ===== КНОПКИ ===== */
 .choices{
@@ -253,22 +266,16 @@ p{margin:0 0 14px;max-width:62ch;}
   color:var(--ink-fade);
   transition:color .12s;
 }
-.choices button:hover{
-  background:rgba(176,141,63,.08);
-}
-.choices button:hover::before{
-  color:var(--clay);
-}
+.choices button:hover{background:rgba(176,141,63,.08);}
+.choices button:hover::before{color:var(--clay);}
 .choices button:disabled{
   color:var(--ink-fade);
   cursor:default;
   background:transparent;
 }
-.choices button:disabled::before{
-  color:var(--line-faint);
-}
+.choices button:disabled::before{color:var(--line-faint);}
 
-/* ===== ЗАМЕТКИ НА ПОЛЯХ ===== */
+/* ===== ЗАМЕТКИ ===== */
 .note{
   margin-top:16px;
   min-height:22px;
@@ -288,10 +295,7 @@ p{margin:0 0 14px;max-width:62ch;}
   color:var(--clay);
   opacity:.4;
 }
-.whisper{
-  color:var(--olive);
-  font-style:italic;
-}
+.whisper{color:var(--olive);font-style:italic;}
 
 /* ===== ФИНАЛ ===== */
 .ending{
@@ -343,18 +347,82 @@ p{margin:0 0 14px;max-width:62ch;}
   border-bottom:2px solid var(--leather-dark);
   cursor:pointer;
   transition:background .15s;
+  margin-top:8px;
 }
 #restart:hover{background:var(--leather-dark);}
 
 .hidden{display:none;}
 
-@media (max-width:560px){
+/* ===== ПЛАНШЕТЫ / УЗКИЕ ЭКРАНЫ: разворот → одна колонка ===== */
+@media (max-width:900px){
   body{padding:0;align-items:stretch;}
-  #journal{width:100%;}
-  .spine{width:14px;}
-  .stage{height:200px;margin:10px;}
-  #content{padding:18px 16px 22px;}
-  h1{font-size:20px;}
-  .hud{margin:0 10px;font-size:12px;}
-  .hud > .stat{padding:6px 10px;min-width:120px;}
+  #book{
+    width:100%;
+    height:100vh;
+    height:100dvh;
+    max-height:none;
+    display:flex;
+    flex-direction:column;
+    box-shadow:none;
+    background:var(--leather-dark);
+  }
+  .spine{display:none;}
+  .page{
+    border:none;
+    box-shadow:none;
+    overflow-y:visible;
+  }
+  .page-left{
+    flex:0 0 auto;
+    padding:12px 14px 0;
+  }
+  .page-right{
+    flex:1 1 auto;
+    padding:14px 16px 22px;
+    overflow-y:auto;
+  }
+  .stage{
+    aspect-ratio:16/9;
+    margin-bottom:12px;
+  }
+  .hud{margin-bottom:0;}
+}
+
+/* ===== ТЕЛЕФОНЫ ===== */
+@media (max-width:560px){
+  body{font-size:16px;}
+  .page-left{padding:10px 10px 0;}
+  .page-right{padding:12px 12px 20px;}
+  .stage{aspect-ratio:16/10;margin-bottom:10px;}
+  .hud > .stat{
+    min-width:0;
+    padding:6px 10px;
+    gap:6px;
+  }
+  .stat-label{font-size:10px;}
+  .stat-value{font-size:14px;}
+  .pips i{width:8px;height:8px;}
+  h1{font-size:19px;}
+  h2{font-size:13px;}
+  p{font-size:15px;}
+  .choices button{
+    font-size:15px;
+    padding:11px 12px 11px 34px;
+  }
+  .choices button::before{left:12px;}
+  #herbGrid{grid-template-columns:1fr;}
+  #herbGrid button{
+    border-right:none;
+    border-bottom:1px solid var(--line-faint);
+  }
+  #herbGrid button:last-child{border-bottom:none;}
+  #restart{font-size:14px;padding:11px;}
+  .ending{padding:14px 14px;}
+  .note{font-size:13px;}
+}
+
+@media (max-width:380px){
+  .stage{aspect-ratio:16/11;}
+  .stat-icon{font-size:13px;}
+  h1{font-size:17px;}
 }
