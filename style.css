@@ -1,21 +1,17 @@
-/* ===== ПАЛИТРА: ТЁМНЫЙ ЛЕС ===== */
+/* ===== ПАЛИТРА: кожа, пергамент, чернила ===== */
 :root{
-  --bg:#1a2118;
-  --bg-2:#232b1e;
-  --bg-3:#2c3527;
-  --panel:rgba(36,44,32,.78);
-  --panel-solid:#2a3326;
-  --ink:#e8e2d0;
-  --ink-soft:#a8a48e;
-  --ink-dim:#7a7766;
-  --line:rgba(200,190,160,.18);
-  --line-strong:rgba(200,190,160,.32);
-  --gold:#c9a86a;
-  --gold-soft:#a88a52;
-  --moss:#7a8f5a;
-  --moss-bright:#9ab372;
-  --clay:#c07a4a;
-  --clay-soft:#a4633a;
+  --leather:#3b2a1e;
+  --leather-dark:#2a1d14;
+  --paper:#f2e8d0;
+  --paper-2:#e8dcc0;
+  --ink:#2b2419;
+  --ink-soft:#6b5d48;
+  --ink-fade:#9a8b72;
+  --olive:#5f6b3a;
+  --clay:#a4502e;
+  --gold:#b08d3f;
+  --line:#4a3b2a;
+  --line-faint:#b8a888;
 }
 
 *{box-sizing:border-box;}
@@ -23,52 +19,92 @@
 html,body{height:100%;}
 body{
   margin:0;
-  background:var(--bg);
-  background-image:
-    radial-gradient(circle at 50% -10%, rgba(122,143,90,.18), transparent 55%),
-    radial-gradient(circle at 80% 110%, rgba(192,122,74,.10), transparent 50%),
-    radial-gradient(circle at 15% 40%, rgba(201,168,106,.06), transparent 40%),
-    repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 2px, transparent 2px 10px);
+  background:
+    radial-gradient(circle at 20% 10%, #4a3626 0%, transparent 40%),
+    radial-gradient(circle at 80% 90%, #3a2a1c 0%, transparent 40%),
+    var(--leather-dark);
   color:var(--ink);
   font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   font-size:17px;
-  line-height:1.6;
+  line-height:1.55;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:28px;
+  padding:24px;
 }
 
-/* ===== КАРТОЧКА-ПАНЕЛЬ ===== */
-#game{
+/* ===== ЖУРНАЛ ===== */
+#journal{
   width:min(880px,100%);
-  background:var(--panel);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  border:1px solid var(--line-strong);
-  border-radius:6px;
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,.3),
-    0 24px 60px -20px rgba(0,0,0,.7),
-    inset 0 1px 0 rgba(255,255,255,.04);
   position:relative;
+  display:flex;
+  box-shadow:
+    0 0 0 2px var(--leather-dark),
+    0 20px 40px rgba(0,0,0,.5),
+    inset 0 0 0 1px rgba(0,0,0,.3);
+}
+
+.spine{
+  width:22px;
+  background:
+    repeating-linear-gradient(
+      to right,
+      var(--leather) 0 4px,
+      var(--leather-dark) 4px 6px,
+      var(--leather) 6px 10px
+    );
+  border-right:1px solid var(--leather-dark);
+  position:relative;
+}
+.spine::before,
+.spine::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--leather-dark);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+}
+.spine::before{top:20px;}
+.spine::after{bottom:20px;}
+
+.page{
+  flex:1;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      var(--line-faint) 27px 28px
+    ),
+    linear-gradient(to bottom, var(--paper), var(--paper-2));
+  border:1px solid var(--leather-dark);
+  border-left:none;
+  position:relative;
+  padding:0;
   overflow:hidden;
 }
-#game::before{
+.page::before{
   content:"";
-  display:block;
-  height:3px;
-  background:linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity:.6;
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(160,140,100,.15) 0%, transparent 30%),
+    radial-gradient(circle at 90% 100%, rgba(160,140,100,.15) 0%, transparent 30%);
+  pointer-events:none;
+  z-index:0;
 }
 
 /* ===== СЦЕНА ===== */
 .stage{
   position:relative;
   height:300px;
-  background:var(--bg-3);
-  border-bottom:1px solid var(--line);
+  margin:14px;
+  border:1px solid var(--line);
+  background:var(--paper-2);
   overflow:hidden;
+  z-index:1;
 }
 .stage canvas, .stage img{
   display:block;
@@ -77,238 +113,248 @@ body{
   object-fit:cover;
 }
 .stage img{display:none;}
-.stage::after{
-  content:"";
-  position:absolute; inset:0;
-  box-shadow:inset 0 0 80px 20px rgba(0,0,0,.5);
-  pointer-events:none;
-}
-.stage::before{
-  content:"";
-  position:absolute; inset:12px;
+.stage-frame{
+  position:absolute;
+  inset:4px;
   border:1px solid var(--line);
   pointer-events:none;
-  z-index:1;
+  opacity:.35;
+  z-index:2;
 }
+/* Греческий меандр в углах сцены */
+.stage-frame::before,
+.stage-frame::after{
+  content:"";
+  position:absolute;
+  width:28px;height:28px;
+  border:2px solid var(--gold);
+  opacity:.6;
+}
+.stage-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.stage-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
 
-/* ===== HUD ===== */
+/* ===== HUD: stat block ===== */
 .hud{
   display:flex;
   flex-wrap:wrap;
-  border-bottom:1px solid var(--line);
-  background:var(--bg-2);
-  font-size:12px;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--ink-soft);
+  margin:0 14px;
+  border:1px solid var(--line);
+  background:rgba(242,232,208,.6);
+  font-size:13px;
+  letter-spacing:.04em;
+  z-index:1;
+  position:relative;
 }
-.hud > div{
+.hud > .stat{
   flex:1 1 0;
-  min-width:150px;
-  padding:14px 18px;
-  border-right:1px solid var(--line);
+  min-width:140px;
+  padding:8px 14px;
+  border-right:1px solid var(--line-faint);
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:8px;
 }
-.hud > div:last-child{border-right:none;}
-.hud b{
+.hud > .stat:last-child{border-right:none;}
+.stat-icon{
+  font-size:15px;
+  opacity:.8;
+}
+.stat-label{
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  font-size:11px;
+  letter-spacing:.1em;
+}
+.stat-value{
+  margin-left:auto;
   font-weight:normal;
   font-variant-numeric:tabular-nums;
-  color:var(--gold);
-  font-size:15px;
-  letter-spacing:.06em;
+  color:var(--clay);
+  font-size:16px;
 }
-.meter{
-  flex:1;
-  height:6px;
-  background:rgba(0,0,0,.35);
+.pips{
+  margin-left:auto;
+  display:flex;
+  gap:3px;
+}
+.pips i{
+  width:10px;height:10px;
   border:1px solid var(--line);
-  border-radius:3px;
-  position:relative;
-  overflow:hidden;
-}
-.meter i{
+  background:transparent;
   display:block;
-  height:100%;
-  background:linear-gradient(90deg, var(--moss), var(--moss-bright));
-  transition:width .3s ease;
-  box-shadow:0 0 8px rgba(154,179,114,.4);
 }
-.meter.warm i{
-  background:linear-gradient(90deg, var(--clay-soft), var(--clay));
-  box-shadow:0 0 8px rgba(192,122,74,.4);
-}
+.pips i.on{background:var(--olive);}
+.pips.warm i.on{background:var(--clay);}
 
 /* ===== КОНТЕНТ ===== */
-#content{padding:30px 34px 34px;}
+#content{
+  padding:22px 26px 26px;
+  position:relative;
+  z-index:1;
+}
 
 h1{
-  font-size:26px;
+  font-size:24px;
   font-weight:normal;
-  letter-spacing:.08em;
-  margin:0 0 6px;
+  letter-spacing:.04em;
+  margin:0 0 2px;
   text-transform:uppercase;
-  color:var(--ink);
-  position:relative;
+  border-bottom:1px solid var(--line);
   display:inline-block;
-  padding-bottom:6px;
+  padding-bottom:2px;
+  position:relative;
 }
 h1::after{
   content:"";
   position:absolute;
-  left:0; bottom:0;
-  width:100%; height:1px;
-  background:linear-gradient(90deg, var(--gold), transparent);
+  left:0;bottom:-3px;
+  width:100%;height:1px;
+  background:var(--gold);
+  opacity:.5;
 }
 h2{
-  font-size:15px;
+  font-size:14px;
   font-weight:normal;
   font-style:italic;
   color:var(--ink-soft);
-  margin:10px 0 22px;
-  letter-spacing:.05em;
+  margin:8px 0 16px;
+  letter-spacing:.03em;
 }
-p{margin:0 0 15px;max-width:62ch;color:var(--ink);}
+p{margin:0 0 14px;max-width:62ch;}
 
 /* ===== КНОПКИ ===== */
 .choices{
   display:flex;
   flex-direction:column;
-  gap:8px;
-  margin:22px 0 0;
+  gap:0;
+  margin:16px 0 0;
+  border-top:1px solid var(--line-faint);
 }
 .choices button{
   font:inherit;
   font-size:16px;
   text-align:left;
   cursor:pointer;
-  padding:14px 18px 14px 46px;
-  background:rgba(255,255,255,.02);
+  padding:11px 14px 11px 38px;
+  background:transparent;
   color:var(--ink);
-  border:1px solid var(--line);
-  border-radius:4px;
+  border:none;
+  border-bottom:1px solid var(--line-faint);
   position:relative;
-  transition:background .18s, border-color .18s, color .18s, transform .12s;
+  transition:background .12s, color .12s;
 }
 .choices button::before{
-  content:"";
+  content:"◆";
   position:absolute;
-  left:18px;
+  left:14px;
   top:50%;
-  width:10px;height:10px;
-  margin-top:-5px;
-  border:1px solid var(--gold-soft);
-  border-radius:50%;
-  background:transparent;
-  transition:background .18s, box-shadow .18s;
+  transform:translateY(-50%);
+  font-size:10px;
+  color:var(--ink-fade);
+  transition:color .12s;
 }
 .choices button:hover{
-  background:rgba(201,168,106,.08);
-  border-color:var(--gold-soft);
-  color:#fff;
-  transform:translateX(2px);
+  background:rgba(176,141,63,.08);
 }
 .choices button:hover::before{
-  background:var(--gold);
-  box-shadow:0 0 10px var(--gold);
+  color:var(--clay);
 }
 .choices button:disabled{
-  color:var(--ink-dim);
+  color:var(--ink-fade);
   cursor:default;
   background:transparent;
-  border-color:var(--line);
-  transform:none;
 }
 .choices button:disabled::before{
-  background:var(--ink-dim);
-  border-color:var(--ink-dim);
-  box-shadow:none;
-  opacity:.5;
+  color:var(--line-faint);
 }
 
-/* ===== ЗАМЕТКИ / ШЁПОТ ===== */
+/* ===== ЗАМЕТКИ НА ПОЛЯХ ===== */
 .note{
-  margin-top:20px;
+  margin-top:16px;
   min-height:22px;
   font-size:14px;
   color:var(--ink-soft);
   font-style:italic;
-  border-left:2px solid var(--gold-soft);
-  padding-left:14px;
+  border-left:2px solid var(--clay);
+  padding-left:12px;
+  position:relative;
+}
+.note::before{
+  content:"«";
+  position:absolute;
+  left:-2px;
+  top:-6px;
+  font-size:20px;
+  color:var(--clay);
+  opacity:.4;
 }
 .whisper{
-  color:var(--moss-bright);
+  color:var(--olive);
   font-style:italic;
 }
 
 /* ===== ФИНАЛ ===== */
 .ending{
-  border:1px solid var(--line-strong);
-  background:rgba(255,255,255,.03);
-  padding:20px 22px;
-  margin:10px 0 22px;
+  border:1px solid var(--line);
+  background:rgba(232,220,192,.5);
+  padding:16px 18px;
+  margin:6px 0 18px;
   position:relative;
-  border-radius:4px;
 }
 .ending::before{
   content:"";
   position:absolute;
-  inset:6px;
-  border:1px solid var(--line);
+  inset:4px;
+  border:1px solid var(--line-faint);
   pointer-events:none;
-  opacity:.6;
 }
 
 /* ===== СЕТКА ТРАВ ===== */
 #herbGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:8px;
+  gap:0;
+  border:1px solid var(--line-faint);
+  border-top:none;
   margin:0;
 }
 #herbGrid button{
-  border:1px solid var(--line);
-  border-radius:4px;
-  padding:12px 16px;
-  background:rgba(255,255,255,.02);
+  border:none;
+  border-bottom:1px solid var(--line-faint);
+  border-right:1px solid var(--line-faint);
+  padding:11px 14px;
+  background:transparent;
 }
-#herbGrid button:hover{
-  background:rgba(201,168,106,.08);
-  border-color:var(--gold-soft);
-}
+#herbGrid button:nth-child(2n){border-right:none;}
+#herbGrid button:nth-last-child(-n+2){border-bottom:none;}
 
-/* ===== КНОПКА ПЕРЕЗАПУСКА ===== */
+/* ===== ПЕРЕЗАПУСК ===== */
 #restart{
   display:block;
   width:100%;
   font:inherit;
   font-size:15px;
-  letter-spacing:.12em;
+  letter-spacing:.08em;
   text-transform:uppercase;
-  padding:16px;
-  background:linear-gradient(180deg, var(--moss), var(--olive-dark, #4d5a34));
-  color:#f6f0e2;
-  border:1px solid var(--gold-soft);
-  border-radius:4px;
+  padding:12px;
+  background:var(--leather);
+  color:var(--paper);
+  border:none;
+  border-bottom:2px solid var(--leather-dark);
   cursor:pointer;
-  transition:filter .15s, transform .1s;
-  margin-top:12px;
+  transition:background .15s;
 }
-#restart:hover{
-  filter:brightness(1.15);
-  transform:translateY(-1px);
-}
+#restart:hover{background:var(--leather-dark);}
 
 .hidden{display:none;}
 
 @media (max-width:560px){
   body{padding:0;align-items:stretch;}
-  #game{width:100%;border-left:none;border-right:none;border-radius:0;box-shadow:none;}
-  .stage{height:200px;}
-  #content{padding:22px 20px 26px;}
-  h1{font-size:21px;}
-  .hud > div{min-width:120px;padding:10px 14px;}
-  .choices button{padding-left:40px;}
-  .choices button::before{left:14px;}
+  #journal{width:100%;}
+  .spine{width:14px;}
+  .stage{height:200px;margin:10px;}
+  #content{padding:18px 16px 22px;}
+  h1{font-size:20px;}
+  .hud{margin:0 10px;font-size:12px;}
+  .hud > .stat{padding:6px 10px;min-width:120px;}
 }
