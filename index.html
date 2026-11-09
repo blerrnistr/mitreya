@@ -7,19 +7,40 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="game">
-  <div class="stage">
-    <canvas id="sceneCanvas" width="880" height="300"></canvas>
-    <img id="sceneArt" alt="">
-  </div>
+<div id="journal">
+  <!-- Кожаный корешок -->
+  <div class="spine"></div>
 
-  <div class="hud">
-    <div><span>Время</span><b id="hudTime">5</b></div>
-    <div><span>Силы</span><span class="meter"><i id="barStr" style="width:100%"></i></span></div>
-    <div><span>Тепло</span><span class="meter warm"><i id="barWarm" style="width:50%"></i></span></div>
-  </div>
+  <div class="page">
+    <!-- Сцена-иллюстрация -->
+    <div class="stage">
+      <div class="stage-frame"></div>
+      <canvas id="sceneCanvas" width="880" height="300"></canvas>
+      <img id="sceneArt" alt="">
+    </div>
 
-  <div id="content"></div>
+    <!-- HUD как stat block -->
+    <div class="hud">
+      <div class="stat">
+        <span class="stat-icon">⏳</span>
+        <span class="stat-label">Время</span>
+        <span class="stat-value" id="hudTime">5</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">🌿</span>
+        <span class="stat-label">Силы</span>
+        <span class="pips" id="pipsStr"></span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">☀</span>
+        <span class="stat-label">Тепло</span>
+        <span class="pips" id="pipsWarm"></span>
+      </div>
+    </div>
+
+    <!-- Контент -->
+    <div id="content"></div>
+  </div>
 </div>
 <script src="game.js" defer></script>
 </body>
