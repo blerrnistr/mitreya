@@ -149,6 +149,7 @@ function updateHUD(){
     pipsWarm.appendChild(b);
   }
 }
+
 /* ============ ШЁПОТ ============ */
 let whisperTimer=null;
 function scheduleWhisper(text){
